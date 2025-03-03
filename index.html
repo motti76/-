@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>לוח מודעות דיגיטלי</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            margin: 0;
+        }
+        .schedule {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: right;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .slideshow {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .slideshow img {
+            max-width: 100%;
+            height: auto;
+            max-height: 400px;
+            display: none;
+        }
+        .time {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+        }
+        .active {
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>לוח מודעות דיגיטלי</h1>
+        <p>המרכז הקהילתי שלנו</p>
+    </header>
+
+    <div class="container">
+        <div class="schedule">
+            <h2>זמני השיעורים</h2>
+            <table id="scheduleTable">
+                <tr>
+                    <th>יום</th>
+                    <th>שעה</th>
+                    <th>שיעור</th>
+                    <th>מדריך</th>
+                    <th>מיקום</th>
+                </tr>
+                <tr>
+                    <td>ראשון</td>
+                    <td>09:00 - 10:00</td>
+                    <td>יוגה</td>
+                    <td>שרה כהן</td>
+                    <td>אולם 1</td>
+                </tr>
+                <tr>
+                    <td>שני</td>
+                    <td>18:00 - 19:30</td>
+                    <td>אמנות</td>
+                    <td>דוד לוי</td>
+                    <td>חדר יצירה</td>
+                </tr>
+                <tr>
+                    <td>רביעי</td>
+                    <td>17:00 - 18:00</td>
+                    <td>ריקוד</td>
+                    <td>מיכל אברהם</td>
+                    <td>אולם 2</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="slideshow">
+            <h2>תמונות מהפעילויות שלנו</h2>
+            <div id="slideshow-container">
+                <img src="/api/placeholder/800/500" alt="תמונה 1" class="active">
+                <img src="/api/placeholder/800/500" alt="תמונה 2">
+                <img src="/api/placeholder/800/500" alt="תמונה 3">
+            </div>
+        </div>
+
+        <div class="time" id="lastUpdated">זמן עדכון אחרון: </div>
+    </div>
+
+    <script>
+        // רענון האתר כל שעה
+        setTimeout(function() {
+            location.reload();
+        }, 60 * 60 * 1000); // 60 דקות × 60 שניות × 1000 מילישניות
+        
+        // הצגת זמן העדכון האחרון
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('he-IL', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            document.getElementById('lastUpdated').textContent = 'זמן עדכון אחרון: ' + timeString;
+        }
+        updateTime();
+        
+        // מצגת תמונות
+        let slideIndex = 0;
+        function changeSlide() {
+            const slides = document.querySelectorAll("#slideshow-container img");
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active");
+            }
+            
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }
+            
+            slides[slideIndex - 1].classList.add("active");
+            setTimeout(changeSlide, 5000); // החלפת תמונה כל 5 שניות
+        }
+        
+        // התחלת מצגת התמונות לאחר טעינת הדף
+        window.onload = function() {
+            changeSlide();
+        };
+    </script>
+</body>
+</html>
